@@ -1,7 +1,9 @@
 <?php
 require_once 'Database.class.php';
+require_once 'Calendar.class.php';
 
-//connect to the database
 $db = new Database();
+
+$calendar = new Calendar();
 
 ?>
