@@ -13,9 +13,13 @@ html, body {
 body {
   background-color: #fff;
   font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 input {
   outline: none;
+}
+
+.hide {
+  display: none;
 }

@@ -1,25 +1,29 @@
 <?php
 
+require_once 'Database.class.php';
+
 class Calendar {
 
   private $weekDaysArray = array("Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun");
   private $monthArray = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" );
 
 
-  private $currentYear=0;
-  private $currentMonth=0;
-  private $currentDay=0;
-  private $currentDate=null;
-  private $daysInMonth=0;
-  private $naviHref= null;
+  private $currentYear = 0;
+  private $currentMonth = 0;
+  private $currentDay = 0;
+  private $currentDate = null;
+  private $daysInMonth = 0;
+  private $holidaysArray = array();
+  private $naviHref = null;
 
 
   // Constructor
   function __construct() {
     $this->naviHref = htmlentities($_SERVER["PHP_SELF"]);
+    $this->_init();
   }
 
-  private function init() {
+  private function _init() {
     $year  == null;
 
     if (isset($_GET["year"])) {
@@ -29,59 +33,58 @@ class Calendar {
     }
 
     $this->currentYear=$year;
-
-    //$this->daysInMonth=$this->_daysInMonth($month,$year);
   }
+
 
   public function show() {
-    $this->init();
-    echo "<div class='box'>" . $this->_createNavi() . "</div>";
+    $showCal = "";
 
     foreach ($this->monthArray as $i => $i_val) {
-      echo "<div class='hp-month'>\n";
-        echo "<table class='month-table'>\n";
-          echo "<tr>\n<th class='month-name' colspan='7'>" . $i_val . "</th>\n</tr>\n";
-          echo $this->_showWeekDays();
+      $showCal .= "<div class='hp-month'>\n";
+        $showCal .= "<table class='month-table'>\n";
+          $showCal .= "<tr>\n<th class='month-name' colspan='7'>" . $i_val . "</th>\n</tr>\n";
+          $showCal .= $this->_showWeekDays();
 
-            echo $this->_showDays($i+1);
+            $showCal .= $this->_showDays($i+1);
 
-        echo "</table>";
-      echo "</div>";
+        $showCal .= "</table>\n";
+      $showCal .= "</div>\n";
     }
 
+    return $showCal;
   }
 
 
-  private function _showDays($month=null) {
-    $day = 1;
-    $allDays = "";
+  public function createNavi(){
+    $year = date('Y', mktime(0,0,0,2,1,$this->currentYear));
+    return
+      "<div class='header'>\n" .
+        "<a class='prev' href='" . $this->naviHref . "?year=" . ($this->currentYear-1) . "'>Prev</a>\n" .
+          "<span class='title'>" . $year . "</span>\n" .
+        "<a class='next' href='" . $this->naviHref . "?year=" . ($this->currentYear+1) . "'>Next</a>\n" .
+      "</div>\n";
+  }
+
+
+  private function _showDays($month) {    $allDays = "";
     $firstDay = date("w",mktime(0,1,0,$month,1,$this->currentYear));
     $daysInMonth = date("t",mktime(0,1,0,$month,1,$this->currentYear));
     $weeksInMonth = $this->_weeksInMonth($month);
 
+    $db = new Database();
+    $this->holidaysArray = $db->getHolidaysInMonth($this->currentYear, $month, $daysInMonth);
+
+    $day = 1;
+
     for($row = 1; $row <= $weeksInMonth; $row++) {
-
       if($row == 1){
-
         $allDays .= "<tr>\n";
-
         for($cell = 1; $cell <= 7; $cell++) {
-
           if (($cell == 7 && $firstDay == 0) || $cell == $firstDay || $day > 1) {
-
-            $allDays .= "<td";
-
-            if ($cell == 6 || $cell == 7) {
-              $allDays .= " class='usual-holiday'";
-            }
-            $allDays .= ">" . $day . "</td>\n";
+            $allDays .= $this->_fillDayCell($day,$cell);
             $day++;
           } else {
-            $allDays .= "<td";
-            if ($cell == 6 || $cell == 7) {
-              $allDays .= " class='usual-holiday'";
-            }
-            $allDays .= ">&nbsp;</td>\n";
+            $allDays .= $this->_fillDayCell(0,$cell);
           }
         }
         $allDays .= "</tr>\n";
@@ -89,17 +92,9 @@ class Calendar {
         $allDays .= "<tr>\n";
         for($cell = 1; $cell <= 7; $cell++) {
           if($day > $daysInMonth){
-            $allDays .= "<td";
-            if ($cell == 6 || $cell == 7) {
-              $allDays .= " class='usual-holiday'";
-            }
-            $allDays .= ">&nbsp;</td>\n";
+            $allDays .= $this->_fillDayCell(0,$cell);
           } else {
-            $allDays .= "<td";
-            if ($cell == 6 || $cell == 7) {
-              $allDays .= " class='usual-holiday'";
-            }
-            $allDays .= ">" . $day . "</td>\n";
+            $allDays .= $this->_fillDayCell($day,$cell);
             $day++;
           }
         }
@@ -110,18 +105,45 @@ class Calendar {
     return $allDays;
   }
 
-  /**
-  * create navigation
-  */
-  private function _createNavi(){
-    $year = date('Y', mktime(0,0,0,2,1,$this->currentYear));
-    return
-      '<div class="header">' .
-        '<a class="prev" href="' . $this->naviHref . '?year=' . ($this->currentYear-1) . '">Prev</a>' .
-          '<span class="title">' . $year . '</span>' .
-        '<a class="next" href="' . $this->naviHref . '?year='. ($this->currentYear+1) . '">Next</a>' .
-      '</div>';
+
+  private function _fillDayCell($day,$cell) {
+    $dayCell = "";
+    $holiday = "";
+
+    $dayCell .= "<td class='";
+
+    if (!$day) {
+
+      if ($cell == 6 || $cell == 7) {
+        $dayCell .= "usual-holiday ";
+      }
+      $dayCell .= "'>&nbsp;";
+
+    } else {
+
+      if ($cell == 6 || $cell == 7) {
+        $dayCell .= "usual-holiday ";
+      }
+      foreach ($this->holidaysArray as $key => $value) {
+        if (date('j', strtotime($value[Date])) == $day) {
+          $dayCell .= "special-holiday ";
+          $holiday = $value[Name];
+          break;
+        }
+      }
+      $dayCell .= "'>\n";
+      $dayCell .= "<a class='day-link' href='' target='_blank'>" . $day . "</a>";
+      if (!empty($holiday)) {
+        $dayCell .= "<div class='holiday-detail'>" . $holiday . "</div>\n";
+      }
+
+    }
+
+    $dayCell .= "</td>\n";
+
+    return $dayCell;
   }
+
 
   private function _showWeekDays(){
     $weekDays = "";
@@ -135,14 +157,17 @@ class Calendar {
   }
 
 
-  private function _weeksInMonth($month=null) {
+  private function _weeksInMonth($month) {
     $month = date("n", mktime(0, 0, 0, $month, 1, $this->currentYear));
     $firstDay = mktime(0,1,0,$month,1,$this->currentYear);
     $daysInMonth = date("t",$firstDay);
     $firstDay = date("w",$firstDay);
-
-    $totalCells = $firstDay + $daysInMonth;
-    if($totalCells < 37){
+    if ($firstDay > 0) {
+      $totalCells = $firstDay + $daysInMonth;
+    } else {
+      $totalCells = $daysInMonth + 6;
+    }
+    if($totalCells <= 36){
       $rowCount = 5;
     } else {
       $rowCount = 6;

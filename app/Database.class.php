@@ -20,11 +20,21 @@ class Database {
     $this->db->close();
   }
 
+
+  public function getHolidaysInYear($year) {
+    return $this->select("holidays", "Date BETWEEN '$year-01-01' AND '$year-12-31'");
+  }
+
+
+  public function getHolidaysInMonth($year, $month, $lastDay) {
+    return $this->select("holidays", "Date BETWEEN '$year-$month-01' AND '$year-$month-$lastDay'");
+  }
+
+
   public function select($table, $where) {
     $resultArray = array();
 
     $sql = "SELECT * FROM $table WHERE $where";
-    print_r($sql);
     $result = $this->db->query($sql);
 
     while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -34,6 +44,7 @@ class Database {
 
     return $resultArray;
   }
+
 
   public function update($data, $table, $where) {
     $sequence = "";
@@ -45,6 +56,7 @@ class Database {
     print_r($sql);
     $result = $this->db->query($sql);
   }
+
 
   public function insert($data, $table) {
     $columns = "";
