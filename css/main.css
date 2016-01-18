@@ -1,5 +1,7 @@
 * {
   box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 html {
@@ -8,6 +10,8 @@ html {
 
 html, body {
   height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 body {
@@ -53,7 +57,7 @@ th {
 }
 
 td:hover {
-  background-color: rgba(185, 185, 185, 0.5);
+  background-color: rgba(224, 224, 224, 0.5);
   font-size: 1.2em;
   line-height: 1em;
 }
@@ -65,7 +69,7 @@ td:hover {
 
 .usual-holiday:hover {
   background-color: rgba(255, 234, 103, 0.8);
-  font-size: 1.2em;
+  font-size: 1.3em;
   line-height: 1em;
 }
 
@@ -76,13 +80,14 @@ td:hover {
 
 .special-holiday:hover {
   background-color: rgba(255, 159, 159, 0.7);
-  font-size: 1.2em;
+  font-size: 1.3em;
   line-height: 1em;
 }
 
 .day-link {
   display: inline-block;
   width: 100%;
+  color: inherit;
   text-decoration: none;
 }
 
@@ -97,4 +102,62 @@ td:hover {
 
 .special-holiday:hover .holiday-detail {
   display: block;
+}
+
+.create-message {
+  padding: 20px;
+  margin: 0;
+  text-transform: uppercase;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.holiday-form {
+  display: block;
+  padding: 20px;
+  width: 100%;
+  max-width: 700px;
+}
+
+.error-message {
+  margin: 0;
+  padding: 0;
+  color: red;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+input[type="text"],
+input[type="date"] {
+  display: block;
+  width: 100%;
+  padding: 7px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  background: transparent;
+  margin-bottom: 10px;
+  font: 16px Arial, Helvetica, sans-serif;
+  height: 45px;
+}
+
+input[type="submit"] {
+  display: inline-block;
+  cursor: pointer;
+  color: #FFFFFF;
+  margin-left: 70%;
+  margin-top: 14px;
+  padding: 12px 40px;
+  background-color: #2CBBBB;
+  border: 0px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  text-align: right;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+input[type="submit"]:hover {
+  background-color: #34CACA;
 }

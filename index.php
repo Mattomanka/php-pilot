@@ -1,11 +1,10 @@
-<?
-  require_once "app/config.php";
+<?php
+  require_once "app/Calendar.class.php";
+  $calendar = new Calendar();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <base href="/">
   <meta charset="UTF-8">
   <title>Holidays</title>
   <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -14,11 +13,10 @@
 </head>
 <body>
 
-<header class='nav'>
+<header class="nav">
   <?php echo $calendar->createNavi(); ?>
 </header>
 
-<?php //print_r($db->getHolidaysInYear(2016)); ?>
 <?php
   echo $calendar->show();
 ?>

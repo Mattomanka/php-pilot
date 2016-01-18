@@ -21,17 +21,22 @@ class Database {
   }
 
 
-  public function getHolidaysInYear($year) {
-    return $this->select("holidays", "Date BETWEEN '$year-01-01' AND '$year-12-31'");
+  public function getHolidayByID($id) {
+    return $this->_select("holidays", "ID = " . $id);
   }
 
 
   public function getHolidaysInMonth($year, $month, $lastDay) {
-    return $this->select("holidays", "Date BETWEEN '$year-$month-01' AND '$year-$month-$lastDay'");
+    return $this->_select("holidays", "Date BETWEEN '$year-$month-01' AND '$year-$month-$lastDay'");
   }
 
 
-  public function select($table, $where) {
+  public function insertHoliday($date, $name) {
+    return $this->_insert("holidays", array("Name" => "'" . $name . "'", "Date" => "'" . $date . "'"));
+  }
+
+
+  private function _select($table, $where) {
     $resultArray = array();
 
     $sql = "SELECT * FROM $table WHERE $where";
@@ -46,7 +51,7 @@ class Database {
   }
 
 
-  public function update($data, $table, $where) {
+  private function _update($data, $table, $where) {
     $sequence = "";
     foreach ($data as $column => $value) {
       $sequence .= ($sequence == "") ? "" : ", ";
@@ -58,7 +63,7 @@ class Database {
   }
 
 
-  public function insert($data, $table) {
+  private function _insert($table, $data) {
     $columns = "";
     $values = "";
     foreach ($data as $column => $value) {
@@ -69,8 +74,8 @@ class Database {
     }
 
     $sql = "insert into $table ($columns) values ($values)";
-    print_r($sql);
     $result = $this->db->query($sql);
+    return $result;
   }
 }
 

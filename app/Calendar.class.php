@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Database.class.php';
+require_once "Database.class.php";
 
 class Calendar {
 
@@ -17,7 +17,7 @@ class Calendar {
   private $naviHref = null;
 
 
-  // Constructor
+  // Constructor - check year selection
   function __construct() {
     $this->naviHref = htmlentities($_SERVER["PHP_SELF"]);
     $this->_init();
@@ -81,10 +81,10 @@ class Calendar {
         $allDays .= "<tr>\n";
         for($cell = 1; $cell <= 7; $cell++) {
           if (($cell == 7 && $firstDay == 0) || $cell == $firstDay || $day > 1) {
-            $allDays .= $this->_fillDayCell($day,$cell);
+            $allDays .= $this->_fillDayCell($day,$cell,$month);
             $day++;
           } else {
-            $allDays .= $this->_fillDayCell(0,$cell);
+            $allDays .= $this->_fillDayCell(0,$cell,$month);
           }
         }
         $allDays .= "</tr>\n";
@@ -92,9 +92,9 @@ class Calendar {
         $allDays .= "<tr>\n";
         for($cell = 1; $cell <= 7; $cell++) {
           if($day > $daysInMonth){
-            $allDays .= $this->_fillDayCell(0,$cell);
+            $allDays .= $this->_fillDayCell(0,$cell,$month);
           } else {
-            $allDays .= $this->_fillDayCell($day,$cell);
+            $allDays .= $this->_fillDayCell($day,$cell,$month);
             $day++;
           }
         }
@@ -106,9 +106,10 @@ class Calendar {
   }
 
 
-  private function _fillDayCell($day,$cell) {
+  private function _fillDayCell($day,$cell,$month) {
     $dayCell = "";
     $holiday = "";
+    $id = 0;
 
     $dayCell .= "<td class='";
 
@@ -128,13 +129,17 @@ class Calendar {
         if (date('j', strtotime($value[Date])) == $day) {
           $dayCell .= "special-holiday ";
           $holiday = $value[Name];
+          $id = $value[ID];
           break;
         }
       }
       $dayCell .= "'>\n";
-      $dayCell .= "<a class='day-link' href='' target='_blank'>" . $day . "</a>";
       if (!empty($holiday)) {
+        $dayCell .= "<a class='day-link' href='single.php?id=" . $id . "' target='_blank'>" . $day . "</a>";
         $dayCell .= "<div class='holiday-detail'>" . $holiday . "</div>\n";
+      } else {
+        $dayData = $this->currentYear . "-" . $month . "-" . $day;
+        $dayCell .= "<a class='day-link' href='create.php?date=" . $dayData . "' target='_blank'>" . $day . "</a>";
       }
 
     }
