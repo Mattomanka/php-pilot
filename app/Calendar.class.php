@@ -58,11 +58,9 @@ class Calendar {
   public function createNavi(){
     $year = date('Y', mktime(0,0,0,2,1,$this->currentYear));
     return
-      "<div class='header'>\n" .
-        "<a class='prev' href='" . $this->naviHref . "?year=" . ($this->currentYear-1) . "'>Prev</a>\n" .
-          "<span class='title'>" . $year . "</span>\n" .
-        "<a class='next' href='" . $this->naviHref . "?year=" . ($this->currentYear+1) . "'>Next</a>\n" .
-      "</div>\n";
+      "<a class='prev' href='" . $this->naviHref . "?year=" . ($this->currentYear-1) . "'><</a>\n" .
+        "<span class='title'>" . $year . "</span>\n" .
+      "<a class='next' href='" . $this->naviHref . "?year=" . ($this->currentYear+1) . "'>></a>\n";
   }
 
 

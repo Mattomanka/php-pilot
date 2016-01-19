@@ -14,6 +14,11 @@
   max-width: 700px;
 }
 
+.delete-form {
+  position: relative;
+  margin-top: -20px;
+}
+
 .error-message {
   margin: 0;
   padding: 0;
@@ -41,18 +46,45 @@ input[type="submit"] {
   display: inline-block;
   cursor: pointer;
   color: #FFFFFF;
-  margin-left: 70%;
   margin-top: 14px;
   padding: 12px 40px;
   background-color: #2CBBBB;
   border: 0px;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  text-align: right;
   text-decoration: none;
   text-transform: uppercase;
 }
 
-input[type="submit"]:hover {
-  background-color:#34CACA;
+input[type="submit"].submit-button:hover {
+  background-color: #3FD8D8;
+}
+
+input[type="submit"].delete-button {
+  background-color: #E44848;
+  margin-left: 20px;
+  padding: 12px 32px;
+}
+
+input[type="submit"].delete-button:hover {
+  background-color: #E63535;
+}
+
+.back-link {
+  display: inline-block;
+  cursor: pointer;
+  color: #FFFFFF;
+  margin-top: 14px;
+  margin-left: 10px;
+  padding: 12px 40px;
+  background-color: #D8D8D8;
+  border: 0px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.back-link:hover {
+  background-color: #C3C3C3;
 }

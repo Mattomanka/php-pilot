@@ -41,7 +41,8 @@
       <p class="error-message"><?php print_r($result); ?></p>
       <input type="text" name="Name" placeholder="Name holiday" autocomplete="off" />
       <input type="hidden" name="Date" value="<?php echo $date; ?>" />
-      <input type="submit" value="Save" />
+      <input class="submit-button" type="submit" value="Save" />
+      <a class="back-link" href="<?php echo 'http://' . $_SERVER['HTTP_HOST']; ?>">Cancel</a>
     </form>
     <?php
   } else if ($_SERVER["REQUEST_METHOD"] == "POST") {

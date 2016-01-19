@@ -43,7 +43,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 <body>
-
 <?php
   if (isset($_GET["id"]) || ($_SERVER["REQUEST_METHOD"] == "POST" && (!$resultName || !$resultDate) && !isset($_POST["DEL"]))) {
     ?>
@@ -56,10 +55,11 @@
       <input type="hidden" name="ID" value="<?php echo $id; ?>" />
       <input class="submit-button" type="submit" value="Save" />
     </form>
-    <form class="holiday-form" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
+    <form class="delete-form" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
       <input type="hidden" name="ID" value="<?php echo $id; ?>" />
       <input type="hidden" name="DEL" value="1" />
       <input class="delete-button" type="submit" value="Delete" />
+      <a class="back-link" href="<?php echo 'http://' . $_SERVER['HTTP_HOST']; ?>">Cancel</a>
     </form>
     <?php
   } else if ($_SERVER["REQUEST_METHOD"] == "POST") {

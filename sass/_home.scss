@@ -1,3 +1,29 @@
+body.home {
+  background-color: rgb(233, 233, 233);
+}
+
+.nav {
+  height: 40px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.22);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.22);
+  border-bottom: 1px solid rgba(0,0,0,0.22);
+  text-align: center;
+  font-weight: 400;
+}
+
+.prev, .next {
+  padding: 0 10px;
+  font-size: 2em;
+  text-decoration: none;
+  color: #000;
+}
+
+.title {
+  font-size: 1.4em;
+  vertical-align: text-bottom;
+}
+
 .hp-month {
   display: inline-block;
   height: 161px;
@@ -8,6 +34,7 @@
 table {
   border: 1px solid rgb(185, 185, 185);
   border-collapse: collapse;
+  background-color: #fff;
 }
 
 th, td {
