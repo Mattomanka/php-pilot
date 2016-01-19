@@ -36,6 +36,16 @@ class Database {
   }
 
 
+  public function updateHoliday($id, $name, $date) {
+    return $this->_update("holidays", array("Name" => "'" . $name . "'", "Date" => "'" . $date . "'"), "ID=" . $id);
+  }
+
+
+  public function deleteHoliday($id) {
+    return $this->_delete("holidays", "ID=" . $id);
+  }
+
+
   private function _select($table, $where) {
     $resultArray = array();
 
@@ -51,15 +61,15 @@ class Database {
   }
 
 
-  private function _update($data, $table, $where) {
+  private function _update($table, $data, $where) {
     $sequence = "";
     foreach ($data as $column => $value) {
       $sequence .= ($sequence == "") ? "" : ", ";
       $sequence .= $column . "=" . $value . "";
     }
     $sql = "UPDATE $table SET $sequence WHERE $where";
-    print_r($sql);
     $result = $this->db->query($sql);
+    return $result;
   }
 
 
@@ -73,7 +83,16 @@ class Database {
       $values .= $value;
     }
 
-    $sql = "insert into $table ($columns) values ($values)";
+    $sql = "INSERT INTO $table ($columns) VALUES ($values)";
+    $result = $this->db->query($sql);
+    return $result;
+  }
+
+
+  private function _delete($table, $where) {
+
+    $sql = "DELETE FROM $table WHERE $where";
+    print_r($sql);
     $result = $this->db->query($sql);
     return $result;
   }

@@ -135,11 +135,11 @@ class Calendar {
       }
       $dayCell .= "'>\n";
       if (!empty($holiday)) {
-        $dayCell .= "<a class='day-link' href='single.php?id=" . $id . "' target='_blank'>" . $day . "</a>";
+        $dayCell .= "<a class='day-link' href='single.php?id=" . $id . "'>" . $day . "</a>";
         $dayCell .= "<div class='holiday-detail'>" . $holiday . "</div>\n";
       } else {
         $dayData = $this->currentYear . "-" . $month . "-" . $day;
-        $dayCell .= "<a class='day-link' href='create.php?date=" . $dayData . "' target='_blank'>" . $day . "</a>";
+        $dayCell .= "<a class='day-link' href='create.php?date=" . $dayData . "'>" . $day . "</a>";
       }
 
     }

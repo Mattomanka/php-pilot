@@ -18,7 +18,7 @@ class Validator {
     if (preg_match($str,$name)) {
       return true;
     } else {
-      return "Only letters and white space allowed";
+      return false;
     }
   }
 

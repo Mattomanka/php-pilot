@@ -10,7 +10,7 @@
 
     if ($result === true) {
       $url = "http://" . $_SERVER['HTTP_HOST'] . "/success_create.php";
-      $data = array("Name" => $_POST["Name"], "Date" => $_POST["Date"]);
+      $data = array("Name" => addslashes($_POST["Name"]), "Date" => $_POST["Date"]);
       $response = $valid->validateSuccess($url, $data);
     }
   }
