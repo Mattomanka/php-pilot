@@ -4,6 +4,7 @@
 
   $name = "";
   $date = "";
+  $errorName = "";
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $valid->validateName($_POST["Name"]);
@@ -12,6 +13,8 @@
       $url = "http://" . $_SERVER['HTTP_HOST'] . "/success_create.php";
       $data = array("Name" => addslashes($_POST["Name"]), "Date" => $_POST["Date"]);
       $response = $valid->validateSuccess($url, $data);
+    } else {
+      $errorName = "Only letters and white space allowed.";
     }
   }
 
@@ -38,7 +41,7 @@
     ?>
     <h2 class="create-message">This day will be a holiday - <?php echo $date; ?></h2>
     <form class="holiday-form" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
-      <p class="error-message"><?php print_r($result); ?></p>
+      <p class="error-message"><?php print_r($errorName); ?></p>
       <input type="text" name="Name" placeholder="Name holiday" autocomplete="off" />
       <input type="hidden" name="Date" value="<?php echo $date; ?>" />
       <input class="submit-button" type="submit" value="Save" />
